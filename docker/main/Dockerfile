@@ -80,7 +80,7 @@ USER $USER
 RUN mkdir -p $WORKDIR/tools/spinal
 RUN git clone https://github.com/SpinalHDL/SpinalHDL.git $WORKDIR/tools/spinal/SpinalHDL
 WORKDIR $WORKDIR/tools/spinal/SpinalHDL
-RUN sbt clean compile publish-local
+RUN sbt clean compile publishLocal
 
 RUN mkdir -p $WORKDIR/projects/spinal
 RUN cd $WORKDIR/projects/spinal
@@ -217,8 +217,45 @@ RUN git clone https://github.com/cseed/arachne-pnr.git arachne-pnr && \
 # see https://github.com/OLIMEX/iCE40HX1K-EVB/tree/master/programmer/iceprogduino
 
 
+####### Yosys formal ###################################
+
+WORKDIR /opt
+
+RUN apt-get install -y \
+  clang bison flex libreadline-dev \
+  gawk tcl-dev libffi-dev git mercurial \
+  graphviz xdot pkg-config python python3 \
+  libftdi-dev gperf libboost-program-options-dev \
+  autoconf libgmp-dev cmake
+
+RUN git clone https://github.com/cliffordwolf/SymbiYosys.git SymbiYosys && \
+    cd SymbiYosys && \
+    make install
+
+RUN git clone https://github.com/Z3Prover/z3.git z3 && \
+    cd z3 && \
+    python scripts/mk_make.py && \
+    cd build && \
+    make -j$(nproc) && \
+    sudo make install
+
+RUN git clone https://github.com/boolector/boolector && \
+    git clone https://github.com/arminbiere/lingeling boolector/deps/lingeling && \
+    git clone https://github.com/boolector/btor2tools boolector/deps/btor2tools && \
+    ( cd boolector/deps/lingeling  && ./configure.sh -fPIC && make -j$(nproc); ) && \
+    ( cd boolector/deps/btor2tools && ./configure.sh -fPIC && make -j$(nproc); ) && \
+    ( cd boolector && ./configure.sh && cd build && make -j$(nproc); ) && \
+    cp boolector/build/bin/boolector /usr/local/bin/ && \
+    cp boolector/build/bin/btor* /usr/local/bin/ && \
+    cp boolector/deps/btor2tools/bin/btorsim /usr/local/bin/
+
+WORKDIR $WORKDIR/tools
+
+RUN git clone https://github.com/SymbioticEDA/riscv-formal.git
+
 ####### IntelliJ #######################################
 
+WORKDIR /opt
 USER root
 
 # Set the version variables
