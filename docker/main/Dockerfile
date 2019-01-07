@@ -250,6 +250,7 @@ RUN git clone https://github.com/boolector/boolector && \
     cp boolector/deps/btor2tools/bin/btorsim /usr/local/bin/
 
 WORKDIR $WORKDIR/tools
+USER $USER
 
 RUN git clone https://github.com/SymbioticEDA/riscv-formal.git
 
