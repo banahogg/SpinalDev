@@ -57,14 +57,14 @@ As a first step you can run the following commands. They build and test an examp
 cd projects/spinal/SpinalTemplateSbt
 
 # Generate the Verilog of the design
-sbt "run-main mylib.MyTopLevelVerilog"
+sbt "runMain mylib.MyTopLevelVerilog"
 
 # Inspect generated files
 ls
 cat MyTopLevel.v
 
 # Run the scala testbench
-sbt "run-main mylib.MyTopLevelSim"
+sbt "runMain mylib.MyTopLevelSim"
 
 # Inspect the waveform of the simulation
 gtkwave simWorkspace/MyTopLevel/test.vcd&
@@ -92,7 +92,7 @@ The VexRiscv risc-v processor can be build with the following set of commands.
 cd /home/spinaldev/projects/spinal/VexRiscv
 
 # Generate the verilog of the cpu
-sbt "run-main vexriscv.demo.GenFull"
+sbt "runMain vexriscv.demo.GenFull"
 
 # Inspect generated files
 ls

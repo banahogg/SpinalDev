@@ -283,8 +283,8 @@ WORKDIR /opt
 USER root
 
 # Set the version variables
-ARG INTELLIJ_VER=2018.2
-ARG INTELLIJ_SUBVER=6
+ARG INTELLIJ_VER=2020.1
+ARG INTELLIJ_SUBVER=1
 # version id can be found on jetbrains webpage when downloading of scala plugin
 ARG INTELLIJ_VERID=47787
 
